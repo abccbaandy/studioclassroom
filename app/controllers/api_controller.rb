@@ -1,4 +1,6 @@
 require 'open-uri'
+require 'rufus/scheduler'
+
 class ApiController < ApplicationController
 	def check
 		@doc = Nokogiri::HTML(open("http://w2.goodtv.tv/studio_classroom/"))
