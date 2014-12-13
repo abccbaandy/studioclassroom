@@ -13,4 +13,8 @@ class ApiController < ApplicationController
 		end
 		
 	end
+	def links
+		links = Link.all
+		render :json => {:links => links}
+	end
 end
