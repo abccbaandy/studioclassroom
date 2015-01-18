@@ -1,9 +1,13 @@
 require 'open-uri'
-require 'rufus/scheduler'
 
 class ApiController < ApplicationController
 	def check
 		@doc = Nokogiri::HTML(open("http://w2.goodtv.tv/studio_classroom/"))
+		video = @doc.at_css("video")
+		if video.nil?
+			render :json => {:url => "" , :errors => "video not found"}
+			return
+		end
 		url = @doc.at_css("video")[:src]
 		link = Link.new(:url=>url)
 		if link.save
