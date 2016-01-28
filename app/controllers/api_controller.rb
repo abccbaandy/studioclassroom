@@ -1,4 +1,5 @@
 require 'open-uri'
+require "base64"
 
 class ApiController < ApplicationController
 	def check
@@ -14,11 +15,21 @@ class ApiController < ApplicationController
 			render :json => {:url => url }
 		else
 			render :json => {:url => url, :errors => link.errors }
-		end
-		
+		end		
 	end
+
+	def add
+		url = Base64.decode64(params[:url])
+		link = Link.new(:url=>url)
+		if link.save
+			render :json => {:url => url }
+		else
+			render :json => {:url => url, :errors => link.errors }
+		end		
+	end
+
 	def links
-		links = Link.all
+		links = Link.order('links.url DESC').all
 		render :json => {:links => links}
 	end
 end
